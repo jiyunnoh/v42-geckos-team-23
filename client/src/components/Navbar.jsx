@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import Button from './Button'
@@ -10,7 +10,7 @@ import searchIcon from '../assets/search-icon.svg'
 import { Context } from '../contexts/Context'
 import Form from './Form'
 import PopUp from './PopUp'
-import { getBusinessesFromYelpApi } from '../api/yelpAPI'
+import { getBusinessesFromYelpApi } from '../api/YelpAPI'
 import { InputContext } from '../contexts/InputProvider'
 
 const Navbar = () => {
@@ -61,9 +61,9 @@ const Navbar = () => {
                 ctx.setIsLoading(false) // if there is an error, set isLoading to false
                 ctx.setResultsList([]) // if there is an error, set resultsList to empty array
                 ctx.setResultsTitle('')
+                console.log(err)
             })
     }
-
 
     return (
         <div className="bg-red-50 font-nunito">
