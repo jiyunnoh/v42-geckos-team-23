@@ -9,8 +9,18 @@ const app = express();
 
 require('dotenv').config();
 
-// Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, '../client/dist')));
+if (process.env.NODE_ENV === 'production') {
+  // Have Node serve the files for our built React app
+  // Set static folder up in production
+  app.use(express.static('../client/dist'));
+
+  // All other GET requests not handled before will return our React app
+  app.get('/home', (req, res) => res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html')));
+}
+
+app.get("/", (req, res) => {
+  res.json({ message: "Hello from server!" });
+});
 
 app.get('/api/yelp', (req, res) => {
   const term = req.query.term;
@@ -74,11 +84,6 @@ app.get('/api/yelp/:id/reviews', (req, res) => {
     .catch(error => {
       res.json(error)
     });
-});
-
-// All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
